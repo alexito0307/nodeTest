@@ -2,7 +2,8 @@ const asyncHandler = require("express-async-handler");
 const Tarea = require("../models/tareasModel"); //Importamos el modelo de tareas
 
 const getTarea = asyncHandler( async(req,res) => {
-  res.status(200).json({"message": "Obtener Tareasss"});
+  const tareas = await Tarea.find();
+  res.status(200).json({tareas});
 })
 const createTarea = asyncHandler( async(req,res) => {
   if(!req.body.texto) {
