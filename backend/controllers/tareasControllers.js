@@ -16,11 +16,27 @@ const createTarea = asyncHandler( async(req,res) => {
   res.status(200).json({mensaje: tarea}); //Se devuelve la tarea creada
 })
 
-const updateTarea = asyncHandler (async(req,res) => {
-  res.send("Actualizar Tareaaaaaa");
-})
+const updateTarea = asyncHandler(async (req, res) => {
+  const tarea = await Tarea.findById(req.params.id);
+  if(!tarea) {
+    res.status(400);
+    throw new Error("Tarea no encontrada");
+  }
+  const tareaNueva = await Tarea.findByIdAndUpdate(req.params.id, req.body, {
+    new: true
+  });
+  res.status(200).json(tareaNueva);
+});
+
+
 const deleteTarea = asyncHandler( async(req,res) => {
-  res.send("Eliminar Tareaaaaaa");
+  const tarea = await Tarea.findById(req.params.id);
+  if(!tarea) {
+    res.status(400);
+    throw new Error("Tarea no encontrada");
+  }
+  await tarea.deleteOne();
+  res.status(200).json({"id": req.params.id});
 })
 module.exports = {
   getTarea,
